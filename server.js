@@ -1,14 +1,17 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+
+const exampleData = require('./routes/api/exampleData')
+const messages = require('./routes/api/messages')
 
 const app = express()
 
-app.get('/api/data', (req, res) => {
-  const data = {
-    greeting: 'hellerrr!'
-  }
+// use body-parser middleware
+app.use(bodyParser.json())
 
-  res.json(data)
-})
+// use routes
+app.use('/api/example-data', exampleData)
+app.use('/api/messages', messages)
 
 const port = 5000
 
