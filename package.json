@@ -4,12 +4,24 @@
   "description": "a playground for trying out different things with web forms",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdashmiller/form-sandbox.git"
   },
   "author": "Matt Miller",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "concurrently": "^4.1.0",
+    "mocha": "^6.0.2"
   }
 }
