@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import './styles.scss'
 
 const Form = () => {
@@ -25,6 +26,13 @@ const Form = () => {
     e.preventDefault()
 
     setSubmitStatus(true)
+
+    const data = {name, message}
+
+    axios
+      .post('/send', data)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   function reset() {

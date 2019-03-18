@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const send = require('./routes/send')
 const exampleData = require('./routes/api/exampleData')
 const messages = require('./routes/api/messages')
 
@@ -10,6 +11,7 @@ const app = express()
 app.use(bodyParser.json())
 
 // use routes
+app.use('/send', send)
 app.use('/api/example-data', exampleData)
 app.use('/api/messages', messages)
 
