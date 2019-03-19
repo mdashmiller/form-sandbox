@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import './styles.scss'
 
 const Form = () => {
@@ -25,9 +26,19 @@ const Form = () => {
     e.preventDefault()
 
     setSubmitStatus(true)
+
+    const data = {name, message}
+
+    // send data from form as POST
+    // request to api/send
+    axios
+      .post('/api/send', data)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
   }
 
   function reset() {
+    // reset form to take a new message
     setName('')
     setMessage('')
     setSubmitStatus(false)

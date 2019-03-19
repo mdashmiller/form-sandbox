@@ -2,19 +2,7 @@ const express = require('express')
 const router = express.Router()
 const uuid = require('uuid')
 
-// pseudo db
-const messages = [
-  {
-    id: uuid(),
-    name: 'Bart Simpson',
-    message: 'Will I ever turn eleven?!'
-  },
-  {
-    id: uuid(),
-    name: 'Jean Valjean',
-    message: 'I don\'t mind stealing bread...'
-  }
-]
+const messages = require('../../models/Messages')
 
 // @route   GET api/messages
 // @desc    GET all messages
