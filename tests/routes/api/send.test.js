@@ -2,11 +2,15 @@ const expect = require('chai').expect
 const mockery = require('mockery')
 const nodemailerMock = require('nodemailer-mock')
 
-describe('sending email from /api/send middleware', () => {
+describe('POST request to /api/send to send email', () => {
+
+  let app = null
 
   before(() => {
     mockery.enable({ warnOnUnregistered: false })
     mockery.registerMock('nodemailer', nodemailerMock)
+
+    app = require('../../../server')
     const mockTransporter = require('../../../services/nodemailer')
   })
 
