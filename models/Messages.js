@@ -3,7 +3,7 @@ const uuid = require('uuid')
 // pseudo db
 const messages = [
   {
-    id: uuid(),
+    id: 'test_id',
     name: 'Bart Simpson',
     message: 'Will I ever turn eleven?!'
   },

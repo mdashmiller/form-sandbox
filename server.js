@@ -18,3 +18,5 @@ app.use('/api/messages', messages)
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
+
+module.exports = app
