@@ -38,14 +38,14 @@ describe('createTransport()', () => {
     expect(createTransportSpy).to.have.been.calledWith(testOptions)
   })
 
-  it('should create a transport object with the options provided', () => {
-    let testTransport = nodemailer.createTransport(testOptions)
+  it('should create a transporter object with the options provided', () => {
+    let testTransporter = nodemailer.createTransport(testOptions)
     
-    expect(testTransport)
+    expect(testTransporter)
       .to.have.nested.property('transporter.options.host', testOptions.host)
-    expect(testTransport)
+    expect(testTransporter)
       .to.have.nested.property('transporter.options.auth.user', testOptions.auth.user)
-    expect(testTransport)
+    expect(testTransporter)
       .to.have.nested.property('transporter.options.auth.pass', testOptions.auth.pass)
   })
 
