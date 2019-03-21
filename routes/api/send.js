@@ -8,7 +8,6 @@ const router = express.Router()
 // @desc    Send a message
 // @access  Public
 router.post('/', (req, res, next) => {
-  const sender = req.body.name
   const message = `
     <p>From: ${req.body.name}</p>
     <p>Message: ${req.body.message}</p>

@@ -13,7 +13,7 @@ const transport = {
 }
 
 // create transporter object using gmail SMTP
-const transporter = nodemailer.createTransport(transport)
+let transporter = nodemailer.createTransport(transport)
 
 transporter.verify((error, success) => {
   if (error) {

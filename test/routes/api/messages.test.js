@@ -23,6 +23,16 @@ describe('GET /api/messages', () => {
 
 })
 
+describe('GET /api/tiger-cat', () => {
+
+  it('should respond with a 404', done => {
+    request(app)
+      .get('/api/tiger-cat')
+      .expect(404, done)
+  })
+
+})
+
 describe('POST /api/messages', () => {
 
   const message = {
