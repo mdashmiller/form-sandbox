@@ -23,7 +23,17 @@ describe('GET /api/messages', () => {
 
 })
 
-describe('POPST /api/messages', () => {
+describe('GET /api/tiger-cat', () => {
+
+  it('should respond with a 404', done => {
+    request(app)
+      .get('/api/tiger-cat')
+      .expect(404, done)
+  })
+
+})
+
+describe('POST /api/messages', () => {
 
   const message = {
     name: 'Mr. Test',
@@ -63,7 +73,18 @@ describe('DELETE /api/messages/test_id', () => {
     request(app)
       .delete('/api/messages/test_id')
       .then(res => {
+        // check that the success message is sent
         expect(res.body.success).to.equal(true)
+
+        // create list of all messages
+        let idList = []
+        for(const item in res.body) {
+          if (res.body[item].id) {
+            idList.push(res.body[item])
+          }
+        }
+        // check that the deleted message is not in the list
+        expect(idList.indexOf('test_id')).to.equal(-1)
         done()
       })
       .catch(err => done(err))
