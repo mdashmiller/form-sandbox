@@ -50,3 +50,5 @@ describe('createTransport()', () => {
   })
 
 })
+
+// test for transporter.verify

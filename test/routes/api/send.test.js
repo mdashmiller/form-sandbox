@@ -1,121 +1,71 @@
-const chai = require('chai')
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
-const nodemailer = require('nodemailer')
-const transporter = require('../../../services/nodemailer')
+const app = require('../../../server')
+const request = require('supertest')
+const expect = require('chai').expect
+const nodemailerMock = require('nodemailer-mock')
 
-const expect = chai.expect
-chai.use(sinonChai)
+describe('POST request to /api/send to send email', () => {
 
-describe('POST /api/send', () => {
+  // testable message data
+  const reqBody = {
+    name: 'testName',
+    message: 'testMessage'
+  }
 
-  describe('nodemailer middleware', () => {
+  const testMessage = {
+    from: 'testUser',
+    to: 'testReceiver',
+    subject: 'test subject',
+    html: 'test html'
+  }
 
-    // create a testable transporter
-    let createTransportSpy
-    beforeEach(() => {
-      createTransportSpy = sinon.spy(nodemailer, 'createTransport')
+  describe('message send fail', () => {
+    // test for msg: 'fail'
+  })
+
+  describe('message send success', () => {
+
+    it('should respond with JSON', done => {
+      request(app)
+        .post('/api/send')
+        .send(reqBody)
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+        // test for msg: 'success'
+
+      nodemailerMock.mock.reset()
     })
 
-    afterEach(() => {
-      createTransportSpy.restore()
+    it('should send email using nodemailer-mock with expected properties', done => {
+      let response = request(app)
+        .post('/api/send')
+        .send(reqBody)
+
+      let sentMail = nodemailerMock.mock.sentMail()
+
+      expect(sentMail.length).to.equal(1)
+      expect(sentMail[0].from).to.equal(testMessage.from)
+      expect(sentMail[0].to).to.equal(testMessage.to)
+      expect(sentMail[0].subject).to.equal(testMessage.subject)
+      expect(sentMail[0].html).to.equal(testMessage.html)
+
+      done()
+
+      nodemailerMock.mock.reset()
     })
 
-    it('calls transporter.sendMail()', () => {
-      let sendMailSpy = sinon.spy(transporter, 'sendMail')
+    it('should send email with expected values from req.body', done => {
+      let response = request(app)
+        .post('/api/send')
+        .send(reqBody)
 
-      transporter.sendMail({}, () => { })
+      expect(response).to.have.nested.property('_data.name', reqBody.name)
+      expect(response).to.have.nested.property('_data.message', reqBody.message)
 
-      expect(sendMailSpy).to.have.been.calledOnce
+      done()
 
-      sendMailSpy.restore()
-    })
-
-    describe('sendMail()', () => {
-
-      // create a stub of transporter.sendMail() 
-      let sendMailStub
-      beforeEach(() => {
-        sendMailStub = sinon.stub(transporter, 'sendMail')
-      })
-
-      afterEach(() => {
-        sendMailStub.restore()
-      })
-      
-      it('should invoke callback after sending the email', () => {
-        // create a test callback and set the
-        // sendMail stub to invoke it
-        let callbackSpy = sinon.spy()
-        sendMailStub.yields()
-
-        transporter.sendMail({}, callbackSpy)
-
-        expect(callbackSpy).to.have.be.calledOnce
-      })
-
-      it('should send email with the expected mail options', () => {
-        // create a test mailOptions object
-        let mailOptions = {
-          from: 'test@test.com',
-          to: 'send@to.com',
-          subject: 'test email',
-          html: 'some html'
-        }
-
-        transporter.sendMail(mailOptions, () => {})
-
-        expect(sendMailStub).to.be.calledWith(mailOptions)
-      })
-
+      nodemailerMock.mock.reset()
     })
 
   })
 
 })
-
-
-
-// const expect = require('chai').expect
-// const mockery = require('mockery')
-// const nodemailerMock = require('nodemailer-mock')
-
-// describe('POST request to /api/send to send email', () => {
-
-//   let app = null
-
-//   before(() => {
-//     mockery.enable({ warnOnUnregistered: false })
-//     mockery.registerMock('nodemailer', nodemailerMock)
-
-//     app = require('../../../server')
-//     const mockTransporter = require('../../../services/nodemailer')
-//   })
-
-//   afterEach(() => nodemailerMock.mock.reset())
-
-//   after(() => {
-//     mockery.deregisterAll()
-//     mockery.disable()
-//   })
-
-//   it('should send an email using nodemailer-mock', done => {
-//     // call a service that uses nodemailer
-//     var response = ... // <-- your email code here
-
-//     // a fake test for something on our response
-//     response.value.should.be.exactly('value')
-
-//     // get the array of emails we sent
-//     const sentMail = nodemailerMock.mock.sentMail()
-
-//     // we should have sent one email
-//     sentMail.length.should.be.exactly(1)
-
-//     // check the email for something
-//     sentMail[0].property.should.be.exactly('foobar')
-
-//     done()
-//   })
-
-// })
