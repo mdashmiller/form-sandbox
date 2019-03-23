@@ -61,7 +61,7 @@ describe('nodemailer middleware', () => {
         html: 'some html'
       }
 
-      transporter.sendMail(mailOptions, () => { })
+      transporter.sendMail(mailOptions, () => {})
 
       expect(sendMailStub).to.be.calledWith(mailOptions)
     })
