@@ -18,25 +18,25 @@ describe('POST request to /api/send to send email', () => {
     html: 'test html'
   }
 
-  describe('message send fail', () => {
-    // test for msg: 'fail'
-  })
+  describe('sending success', () => {
 
-  describe('message send success', () => {
-
-    it('should respond with JSON', done => {
+    it('should respond with JSON success message', done => {
       request(app)
         .post('/api/send')
         .send(reqBody)
         .expect('Content-Type', /json/)
-        .expect(200, done)
-        // test for msg: 'success'
+        .expect(200)
+        .then(res => {
+          expect(res.body.msg).to.equal('success')
+          done()
+        })
+        .catch(err => done(err))
 
       nodemailerMock.mock.reset()
     })
 
     it('should send email using nodemailer-mock with expected properties', done => {
-      let response = request(app)
+      request(app)
         .post('/api/send')
         .send(reqBody)
 
