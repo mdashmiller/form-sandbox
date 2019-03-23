@@ -1,9 +1,9 @@
-const app = require('../../../server')
+const mockery = require('mockery')
+const nodemailerMock = require('nodemailer-mock')
 const request = require('supertest')
 const expect = require('chai').expect
-const nodemailerMock = require('nodemailer-mock')
 
-describe('POST request to /api/send to send email', () => {
+describe('POST request to /api/send', () => {
 
   // testable message data
   const reqBody = {
@@ -18,7 +18,29 @@ describe('POST request to /api/send to send email', () => {
     html: 'test html'
   }
 
-  describe('sending success', () => {
+  let app
+
+  before(() => {
+    mockery.enable({ warnOnUnregistered: false })
+    mockery.registerMock('nodemailer', nodemailerMock)
+
+    app = require('../../../server')
+  })
+
+  after(function () {
+    mockery.deregisterAll()
+    mockery.disable()
+  })
+
+  // describe('send failure', () => {
+
+  //   it('should fail to send an email', done => {
+      
+  //   })
+
+  // })
+
+  describe('send success', () => {
 
     it('should respond with JSON success message', done => {
       request(app)
